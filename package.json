@@ -18,7 +18,9 @@
   "homepage": "https://github.com/MultiverseLearningProducts/cheese-boards#readme",
   "license": "ISC",
   "dependencies": {
+    "jest": "^28.1.0",
     "sequelize": "^6.19.0",
-    "sqlite": "^4.1.1"
+    "sqlite": "^4.1.1",
+    "sqlite3": "^5.0.8"
   }
 }

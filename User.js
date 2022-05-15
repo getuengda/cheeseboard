@@ -1,9 +1,5 @@
-const { Model } = require('sequelize/types');
-const {Sequelize, sequelize} = require('./db.sqlite');
+const {Sequelize, DataTypes, sequelize, Model} = require('./db');
 
-class User extends Model{
-
-}
 
 let User = sequelize.define('user', {
     name: Sequelize.STRING,
@@ -12,6 +8,4 @@ let User = sequelize.define('user', {
 
 
 
-module.exports = {
-    User
-};
+module.exports = { User };

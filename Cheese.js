@@ -1,17 +1,11 @@
-const { Model } = require('sequelize/types');
-const {Sequelize, sequelize} = require('./db.sqlite');
+const {Sequelize, DataTypes, sequelize, Model} = require('./db');
 
-class Cheese extends Model{
 
-}
-
-let Cheese = sequelize.define('cheese', {
+const Cheese = sequelize.define('cheese', {
     title: Sequelize.STRING,
     description: Sequelize.STRING
 });
 
 
 
-module.exports = {
-    Cheese
-};
+module.exports = { Cheese };
