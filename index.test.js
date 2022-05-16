@@ -127,19 +127,20 @@ describe('User Model',()=> {
         const newUser = await User.create(
         {
             name: 'Kon',
-            email: 'kon@gmail.com'},
-        {
-            name: 'Madi',
-            email: 'madi@yahoo.com'
-        },{
-            name: 'Lin',
-            email: 'lin@gmail.com'
-        },{
-            name: 'Mark',
-            email: 'mark@hotmail.com'
-        });
-        expect(newUser.name).toBe('Kon', 'Madi', 'Lin', 'Mark');
-        expect(newUser.email).toBe('kon@gmail.com','madi@yahoo.com','lin@gmail.com','mark@hotmail.com');
+            email: 'kon@gmail.com'
+        }
+        // {
+        //     name: 'Madi',
+        //     email: 'madi@yahoo.com'
+        // },{
+        //     name: 'Lin',
+        //     email: 'lin@gmail.com'
+        // },{
+        //     name: 'Mark',
+        //     email: 'mark@hotmail.com'}
+        );
+        expect(newUser.name).toBe('Kon');
+        expect(newUser.email).toBe('kon@gmail.com');
     })
 
         //User has a field "name" with  STRING datatype
@@ -202,20 +203,40 @@ describe('User Model',()=> {
  // Boards < - > Cheeses
     // Associate the Board and Cheese models with a Many-to-Many relationship.     
     //  const cheeses = Board.hasMany(Cheese, {through: "cheeses"});
-   
+    describe('Associate the Board and Cheese models',()=> {
+        // Associate the Board and Cheese models with a Many-to-Many relationship. 
+            test('Associate the Board and Cheese models', async () => {
+                const CHE1 = await Cheese.create(
+                    { title: 'Brie_Special', description: 'Italiano' }
+                );
+                const CHE2 = await Cheese.create(
+                    { title: 'Gouda_Special', description: 'Frenchis' }
+                );
 
-    //     Board.create({
-    //         type: 'Plastic',
-    //         cheeses: [
-    //         { id: 1, title: 'Brie' },
-    //         { id: 2, title: 'Maasdam' },
-    //         { id: 3, title: 'Feta'}
-    //         ]
-    //     }, {
-    //         include: [{
-    //         association: Cheese,
-    //         as: 'cheeses'
-    //         }]
-    // });
+                const BOR1 = await Cheese.create(
+                    { type: 'Wood_Case', description: 'Square and thick' }
+                );
+                const BOR2 = await Cheese.create(
+                    { type: 'Glossy_Case', description: 'Circular and thin' }
+                );
+                
+                // Board.belongsToMany(Cheese, { through: 'BoardCheese' });
+                // Cheese.belongsToMany(Board, { through: 'BoardCheese' });
 
+                await CHE1.addBoard(BOR1);
+                await CHE1.addBoard(BOR2);
+                await CHE2.addBoard(BOR1);
+                await CHE2.addBoard(BOR2);
+                
+            const cheeses1 = await CHE1.getBoards();
+            const cheeses2 = await CHE2.getBoards();
 
+            expect(cheeses1.length).toBe(2);
+            expect(cheeses1[0] instanceof Cheese).toBeTruthy;
+                       
+
+            })
+    })
+
+    
+        

@@ -17,11 +17,13 @@ const { Cheese } = require("./Cheese");
 
 // Boards < - > Cheeses
         // Associate the Board and Cheese models with a Many-to-Many relationship.
-            //Board.belongsToMany(Cheese, {through: "cheeses"});
+            Board.belongsToMany(Cheese, {through: "cheeses_boards"});
+            // Board.belongsToMany(Cheese, { through: 'BoardCheese' });
+            // Cheese.belongsToMany(Board, { through: 'BoardCheese' });
         // // A Board can have many Cheeses
             // Board.hasMany(Cheese); 
         // // A Cheese can be on many Boards
-        //     Cheese.hasMany(Board);
+            // Cheese.hasMany(Board);
 
 //Eager Loading
         // Write another test(s) that verify one or more of these:
