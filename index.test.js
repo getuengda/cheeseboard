@@ -1,11 +1,9 @@
 // import {jest} from '@jest/globals';
-const { Sequelize, Association } = require("sequelize");
+const { Sequelize } = require("sequelize");
 // const { Cheese } = require("./Cheese");
 const { sequelize, Model, DataTypes, Number } = require('./db');
 const { User, Board, Cheese } = require('./index')
-const { index } = require('./index')
-
-
+// const { index } = require('./index')
 
 describe('Board Model', () => {
     beforeAll(async () => {
@@ -128,17 +126,7 @@ describe('User Model',()=> {
         {
             name: 'Kon',
             email: 'kon@gmail.com'
-        }
-        // {
-        //     name: 'Madi',
-        //     email: 'madi@yahoo.com'
-        // },{
-        //     name: 'Lin',
-        //     email: 'lin@gmail.com'
-        // },{
-        //     name: 'Mark',
-        //     email: 'mark@hotmail.com'}
-        );
+        });
         expect(newUser.name).toBe('Kon');
         expect(newUser.email).toBe('kon@gmail.com');
     })
@@ -213,30 +201,76 @@ describe('User Model',()=> {
                     { title: 'Gouda_Special', description: 'Frenchis' }
                 );
 
-                const BOR1 = await Cheese.create(
+                const BOR1 = await Board.create(
                     { type: 'Wood_Case', description: 'Square and thick' }
                 );
-                const BOR2 = await Cheese.create(
+                const BOR2 = await Board.create(
                     { type: 'Glossy_Case', description: 'Circular and thin' }
                 );
                 
-                // Board.belongsToMany(Cheese, { through: 'BoardCheese' });
-                // Cheese.belongsToMany(Board, { through: 'BoardCheese' });
+                // let CHESS = await Cheese.findAll();
+                // console.log(`***** CHEESES *****`, CHESS);
 
                 await CHE1.addBoard(BOR1);
                 await CHE1.addBoard(BOR2);
                 await CHE2.addBoard(BOR1);
                 await CHE2.addBoard(BOR2);
                 
-            const cheeses1 = await CHE1.getBoards();
-            const cheeses2 = await CHE2.getBoards();
+            const boards_CHES1 = await CHE1.getBoards();
+            console.log("Check the Cheeses: ",  boards_CHES1)
 
-            expect(cheeses1.length).toBe(2);
-            expect(cheeses1[0] instanceof Cheese).toBeTruthy;
-                       
+            const boards_CHES2 = await CHE2.getBoards();
+            console.log("Check the Cheeses: ",  boards_CHES2)
+            
 
+            expect(boards_CHES1.length).toBe(2)
+            expect(boards_CHES2.length).toBe(2)
+
+            // expect(cheeses[0] instanceof Cheese).toBeTruthy;
+                   
             })
     })
 
-    
-        
+   //Eager Loading 
+     
+   describe('Associate the Board and Cheese models',()=> {
+   test('A board can be loaded with its cheeses', async ()=>{
+        // A board can be loaded with its cheeses
+    const CheesesOnBoards = await Board.findAll(
+        {
+        include: [
+            {
+                model:Cheese, As: 'cheeses-on-all-boards'
+            }
+        ]
+    })
+    expect(CheesesOnBoards.length).toBe(12)
+    })
+
+    test('A cheeses can be loaded with its board', async ()=>{
+         // A cheese can be loaded with its board data
+        const boardsOnCheeses = await Cheese.findAll(
+            {
+            include: [
+                {
+                    model:Board, As: 'boards-on-all-cheeses'
+                }
+            ]
+        })
+        expect(boardsOnCheeses.length).toBe(6)
+        })
+
+        test('A user can be loaded with its boards', async ()=>{
+             // A user can be loaded with its boards
+           const usersOnBoards = await User.findAll(
+               {
+               include: [
+                   {
+                       model:Board, As: 'boards-on-all-users'
+                   }
+               ]
+           })
+           expect(usersOnBoards.length).toBe(4)
+           })
+
+    });
